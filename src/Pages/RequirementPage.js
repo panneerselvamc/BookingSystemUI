@@ -4,25 +4,15 @@ import {
   Form,
   Col,
   Row,
-  InputGroup
+  InputGroup,
+  Modal,
+  ButtonToolbar,
+  Button
 } from "react-bootstrap";
 import axios from 'axios';
 import Header from "./Header";
 import TablePage from './TablePage';
-const data = {
-  columns: [
 
-    {
-      name: 'Paul Byrd',
-      position: 'Chief Financial Officer (CFO)',
-      office: 'New York',
-      age: '64',
-      date: '2010/06/09',
-      salary: '$725'
-    },
-
-  ]
-}
 export default class RequirementPage extends Component {
 
 
@@ -45,6 +35,7 @@ export default class RequirementPage extends Component {
       flightType: null,
       transportType: null,
       transportClass: null,
+      isModalVisible: false
 
       // noOfInfant: null,
       // noOfAdult: null,
@@ -128,6 +119,9 @@ export default class RequirementPage extends Component {
       .then(res => {
         const person = res;
         console.log(person.data)
+        this.setState({
+          isModalVisible: true
+        })
       })
 
 
@@ -164,7 +158,7 @@ export default class RequirementPage extends Component {
 
     return (
       <div className="headerBody">
-       
+
         <Header>
           <br />
           <div style={{ paddingRight: "20%", paddingLeft: "20%" }}>
@@ -364,9 +358,34 @@ export default class RequirementPage extends Component {
 
         </Header>
 
+        <Modal show={this.state.isModalVisible} size="xl"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered scrollable={true}  >
+          <Modal.Header >
+            <Modal.Title>Book Your Flight</Modal.Title>
+          </Modal.Header>
+          <Modal.Body          >
 
 
-       {/* <TablePage/> */}
+
+
+            <TablePage />
+
+
+          </Modal.Body>
+          <Modal.Footer>
+            <ButtonToolbar>
+              <Button variant="primary" onClick={() => {
+                this.setState
+                  ({
+                    isModalVisible: false
+                  })
+              }}>Close</Button>
+            </ButtonToolbar>
+          </Modal.Footer>
+        </Modal>
+
+        {/* <TablePage/> */}
 
       </div>
     );

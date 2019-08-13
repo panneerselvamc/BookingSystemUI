@@ -86,7 +86,7 @@ function EnhancedTableHead(props) {
                         <TableSortLabel
                             active={orderBy === row.id}
                             direction={order}
-                            onClick={createSortHandler(row.id)}
+                            onClick={row.id==="cost"?createSortHandler(row.id):null}
                         >
                             {row.label}
                             {orderBy === row.id ? (
