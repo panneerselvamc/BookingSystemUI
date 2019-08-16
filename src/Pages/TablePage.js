@@ -9,28 +9,12 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
+import {
+    ButtonToolbar,
+    Button
+} from "react-bootstrap";
 
-
-function createData(flightNo, airlineNo, departureTime, arrivalTime, duration, noOfStops, cost) {
-    return { flightNo, airlineNo, departureTime, arrivalTime, duration, noOfStops, cost };
-}
-
-const rows = [
-
-    createData("1234", "222", "12.20", "2.20", "2.00", "3", 1000),
-    createData("234", "222", "12.20", "2.20", "2", "3", 2000),
-    createData("34", "222", "12.20", "2.20", "2", "3", 3000),
-    createData("4", "222", "12.20", "2.20", "2", "3", 4000),
-    createData("1234", "222", "12.20", "2.20", "2.00", "3", 1000),
-    createData("234", "222", "12.20", "2.20", "2", "3", 2000),
-    createData("34", "222", "12.20", "2.20", "2", "3", 3000),
-    createData("4", "222", "12.20", "2.20", "2", "3", 41000),
-    createData("1234", "222", "12.20", "2.20", "2.00", "3", 12000),
-    createData("234", "222", "12.20", "2.20", "2", "3", 52000),
-    createData("34", "222", "12.20", "2.20", "2", "3", 35000),
-    createData("4", "222", "12.20", "2.20", "2", "3", 45000),
-
-];
+import Moment from 'react-moment';
 
 function desc(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -63,11 +47,12 @@ const headRows = [
     { id: 'arrivalTime', numeric: false, disablePadding: false, label: 'Arrival Time' },
     { id: 'duration', numeric: false, disablePadding: false, label: 'Duration' },
     { id: 'noOfStops', numeric: false, disablePadding: false, label: 'No Of Stops' },
-    { id: 'cost', numeric: true, disablePadding: false, label: 'Price' },
+    { id: 'price', numeric: true, disablePadding: false, label: 'Price' },
 ];
 
 function EnhancedTableHead(props) {
-    const { classes, order, orderBy, numSelected, rowCount, onRequestSort } = props;
+
+    const { classes, order, orderBy,  onRequestSort } = props;
     const createSortHandler = property => event => {
         onRequestSort(event, property);
     };
@@ -86,7 +71,7 @@ function EnhancedTableHead(props) {
                         <TableSortLabel
                             active={orderBy === row.id}
                             direction={order}
-                            onClick={row.id==="cost"?createSortHandler(row.id):null}
+                            onClick={row.id === "price" ? createSortHandler(row.id) : null}
                         >
                             {row.label}
                             {orderBy === row.id ? (
@@ -97,6 +82,7 @@ function EnhancedTableHead(props) {
                         </TableSortLabel>
                     </TableCell>
                 ))}
+                <TableCell />
             </TableRow>
         </TableHead>
     );
@@ -104,14 +90,11 @@ function EnhancedTableHead(props) {
 
 EnhancedTableHead.propTypes = {
     classes: PropTypes.object.isRequired,
-    numSelected: PropTypes.number.isRequired,
     onRequestSort: PropTypes.func.isRequired,
-    onSelectAllClick: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
-    rowCount: PropTypes.number.isRequired,
-};
 
+};
 
 
 const useStyles = makeStyles(theme => ({
@@ -142,13 +125,13 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
+    console.log(props.FlightData)
     const classes = useStyles();
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('cost');
-    const [selected, setSelected] = React.useState([]);
+    const [orderBy, setOrderBy] = React.useState('price');
     const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
+    const [dense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     function handleRequestSort(event, property) {
@@ -167,8 +150,6 @@ export default function EnhancedTable() {
     }
 
 
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
@@ -184,44 +165,55 @@ export default function EnhancedTable() {
                             order={order}
                             orderBy={orderBy}
                             onRequestSort={handleRequestSort}
-                            rowCount={rows.length}
+                            rowCount={props.FlightData.length}
                         />
                         <TableBody>
-                            {stableSort(rows, getSorting(order, orderBy))
+                            {stableSort(props.FlightData, getSorting(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (
                                         <TableRow
+                                            key={row.flight_id}
                                         >
-                                            <TableCell component="th" id={labelId} scope="row" padding="" >
-                                            {row.airlineNo}
+                                            <TableCell component="th" id={labelId} scope="row"  >
+                                                {row.airline_id}
                                             </TableCell>
 
-                                             <TableCell align="left">{row.flightNo}</TableCell>
-                                            <TableCell align="left">{row.departureTime}</TableCell>
-                                            <TableCell align="left">{row.arrivalTime}</TableCell>
+                                            <TableCell align="left">{row.flight_id}</TableCell>
+                                            <TableCell align="left">
+                                                <Moment format="DD/MM/YYYY - HH:mm">
+                                                    {row.departureTime}
+                                                </Moment>
+                                            </TableCell>
+                                            <TableCell align="left">
+                                                <Moment format="DD/MM/YYYY - HH:mm">
+                                                    {row.arrivalTime}
+                                                </Moment></TableCell>
                                             <TableCell align="left">{row.duration}</TableCell>
                                             <TableCell align="left">{row.noOfStops}</TableCell>
-                                            <TableCell align="left">{row.cost}</TableCell>
-                                            
+                                            <TableCell align="left">{row.price}</TableCell>
+
+                                            <TableCell align="left">
+
+                                                <ButtonToolbar>
+
+                                                    <Button variant="success" onClick={(e)=>{console.log(row.flight_id)}}>Book</Button>
+
+                                                </ButtonToolbar>
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}
-                            {emptyRows > 0 && (
-                                
-                                <TableRow style={{ height: 0 * emptyRows }}>
-                                    <TableCell colSpan={6} />
-                                </TableRow>
-                            )}
+
                         </TableBody>
                     </Table>
                 </div>
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={rows.length}
+                    count={props.FlightData.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     backIconButtonProps={{
@@ -237,3 +229,4 @@ export default function EnhancedTable() {
         </div>
     );
 }
+

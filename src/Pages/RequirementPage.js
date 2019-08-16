@@ -14,18 +14,6 @@ import Header from "./Header";
 import TablePage from './TablePage';
 
 export default class RequirementPage extends Component {
-
-
-
-  componentDidUpdate() {
-    console.log(this.state.source)
-    console.log(this.state.destination)
-    console.log(this.state.dateOfTravel)
-    // console.log(this.state.dateOfBooking)
-    console.log(this.state.flightType)
-    console.log(this.state.transportClass)
-    console.log(this.state.transportType)
-  }
   constructor(props) {
     super(props);
     this.state = {
@@ -35,124 +23,31 @@ export default class RequirementPage extends Component {
       flightType: null,
       transportType: null,
       transportClass: null,
-      isModalVisible: false
-
-      // noOfInfant: null,
-      // noOfAdult: null,
-      // noOfChildren: null,
-      // dateOfBooking: new Date().getDate() + "-" + (new Date().getMonth() + 1) + "-" + new Date().getFullYear(),
+      isModalVisible: false,
+      flightData: [],
     }
   }
-  updateSource = (e) => {
-    this.setState({
-      source: e.target.value
-    })
-  }
-  updateDestination = (e) => {
-    this.setState({
-      destination: e.target.value
-    })
-  }
-  updateDateOfTravel = (e) => {
-    this.setState({
-      dateOfTravel: e.target.value
-    })
-  }
-  updateIsDomestic = () => {
-    this.setState({
-      flightType: "Domestic"
-
-    })
-  }
-  updateIsInternational = () => {
-    this.setState({
-      flightType: "International"
-
-    })
-  }
-  updateIsFirstClass = () => {
-    this.setState({
-      transportClass: "First Class"
-
-    })
-  }
-  updateIsEconomyClass = () => {
-    this.setState({
-      transportClass: "Economy Class"
-
-    })
-  }
-  updateIsBusinessClass = () => {
-    this.setState({
-      transportClass: "Business Class"
-
-    })
-  }
-
   handleForm = () => {
-    console.log(this.state.source + "     " + this.state.destination)
-
-    const userData = {
-      " sourceAddress": this.state.source,
-      "destination": this.state.destination,
-      "dateOfTravel": this.state.dateOfTravel,
-      "transportClass": this.state.transportClass,
-      " transportType": this.state.transportType
-
-    };
     const userdata = JSON.stringify({
       "sourceAddress": this.state.source,
       "destination": this.state.destination,
-      "dateOfTravel": "",
-      " transportClass": "business",
-      "transportType": "one-way"
+      "dateOfTravel": this.state.dateOfTravel,
+      " transportClass": this.state.transportClass,
+      "transportType": this.state.transportType
     })
-    // const userdata = JSON.stringify({
-    //   "sourceAddress": "china",
-    //   "destination": "usa",
-    //   "dateOfTravel": "",
-    //   " transportClass": "business",
-    //   "transportType": "one-way"
-    // })
-    // console.log(userdata)
+
     axios.post('http://localhost:8880/searchforflight', userdata, { headers: { 'Content-Type': 'application/json' } })
+
       .then(res => {
         const person = res;
-        console.log(person.data)
         this.setState({
+          flightData: person.data,
           isModalVisible: true
         })
       })
 
-
-
-
-    // let age =2;
-    //    axios.post(`http://localhost:8880/test`,{age})
-    //   .then(res => {
-    //     const persons = res.data;
-    //     console.log(persons)
-    //   })
-
   }
-  // updateNoOfInfant=(e)=>{
-  //   this.setState({
-  //     noOfInfant:e.target.value,
 
-  //   })
-  // }
-  // updateNoOfAdult=(e)=>{
-  //   this.setState({
-  //     noOfAdult:e.target.value,
-
-  //   })
-  // }
-  // updateNoOfChildren=(e)=>{
-  //   this.setState({
-  //   noOfChildren:e.target.value,
-
-  //   })
-  // }
   render() {
 
 
@@ -165,7 +60,6 @@ export default class RequirementPage extends Component {
             <br />
             <div className="bodyColor">
               <Form style={{ margin: "2%" }}>
-                {/* -------------------------------------- */}
 
                 <Form.Row>
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -176,7 +70,9 @@ export default class RequirementPage extends Component {
                       required
                       type="text"
                       placeholder="From"
-                      onChange={(e) => this.updateSource(e)}
+                      onChange={(e) => this.setState({
+                        source: e.target.value
+                      })}
                     />
 
 
@@ -189,7 +85,9 @@ export default class RequirementPage extends Component {
                       required
                       type="text"
                       placeholder="To"
-                      onChange={(e) => this.updateDestination(e)}
+                      onChange={(e) => this.setState({
+                        destination: e.target.value
+                      })}
                     />
 
                   </Form.Group>
@@ -207,13 +105,15 @@ export default class RequirementPage extends Component {
                         placeholder="Date"
                         aria-describedby="inputGroupPrepend"
                         required
-                        onChange={(e) => this.updateDateOfTravel(e)}
+                        onChange={(e) => this.setState({
+                          dateOfTravel: e.target.value
+                        })}
                       />
                     </InputGroup>
                   </Form.Group>
                 </Form.Row>
 
-                {/* +++++++++++++++++++++++++++++++++++++++++++++ */}
+
 
                 <fieldset >
                   <Form.Group as={Row}  >
@@ -226,7 +126,10 @@ export default class RequirementPage extends Component {
                         label="Domestic "
                         name="formHorizontalRadios"
                         id="formHorizontalRadios1"
-                        onChange={() => this.updateIsDomestic()}
+                        onChange={() => this.setState({
+                          flightType: "Domestic"
+
+                        })}
                       />
                       <Form.Check
                         type="radio"
@@ -234,14 +137,17 @@ export default class RequirementPage extends Component {
                         name="formHorizontalRadios"
                         id="formHorizontalRadios2"
                         onChange={() =>
-                          this.updateIsInternational()
+                          this.setState({
+                            flightType: "International"
+
+                          })
                         }
                       />
                     </Col>
                   </Form.Group>
                 </fieldset>
 
-                {/* ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; */}
+
 
                 <Form.Group as={Row} controlId="exampleForm.ControlSelect2" >
                   <Form.Label column sm={2}>
@@ -261,8 +167,6 @@ export default class RequirementPage extends Component {
 
 
 
-                {/* ___________________________________ */}
-
 
                 <fieldset>
                   <Form.Group as={Row}>
@@ -275,21 +179,30 @@ export default class RequirementPage extends Component {
                         label="First Class"
                         name="formClass"
                         id="formClass1"
-                        onClick={() => this.updateIsFirstClass()}
+                        onClick={() => this.setState({
+                          transportClass: "First Class"
+
+                        })}
                       />
                       <Form.Check
                         type="radio"
                         label="Business Class"
                         name="formClass"
                         id="formClass2"
-                        onClick={() => this.updateIsBusinessClass()}
+                        onClick={() => this.setState({
+                          transportClass: "Business Class"
+
+                        })}
                       />
                       <Form.Check
                         type="radio"
                         label="Economy Class"
                         name="formClass"
                         id="formClass3"
-                        onClick={() => this.updateIsEconomyClass()}
+                        onClick={() => this.setState({
+                          transportClass: "Economy Class"
+
+                        })}
                       />
                     </Col>
                   </Form.Group>
@@ -298,58 +211,12 @@ export default class RequirementPage extends Component {
 
 
 
-                {/* ---------------------------------- */}
 
-                {/* <Form.Row>
-                  <Form.Group as={Col} md="4" controlId="ageInfant">
-                    <Form.Label>
-                      <b>Infant</b>
-                    </Form.Label>
-
-                    <Form.Control as="select">
-                      <option>0</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                    </Form.Control>
-
-                    </Form.Group>
-                  <Form.Group as={Col} md="4" controlId="ageChildren">
-                    <Form.Label>
-                      <b>Children</b>
-                    </Form.Label>
-                    <Form.Control as="select">
-                      <option>0</option>
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                    </Form.Control>
-                    </Form.Group>
-                  <Form.Group as={Col} md="4" controlId="ageAdult">
-                    <Form.Label>
-                      <b> Adult</b>
-                    </Form.Label>
-                    <InputGroup>
-                      <Form.Control as="select">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                      </Form.Control>
-                    </InputGroup>
-                  </Form.Group>
-                </Form.Row> */}
               </Form>
 
               <div className="centerStyle">
                 <button style={{ backgroundColor: "rgb(60, 179, 113)" }} onClick={() => this.handleForm()}>
-                  <b>Search</b> <i class="material-icons">flight</i>
+                  <b>Search</b> <i className="material-icons">flight</i>
                 </button>
               </div>
               <br />
@@ -364,28 +231,23 @@ export default class RequirementPage extends Component {
           <Modal.Header >
             <Modal.Title>Book Your Flight</Modal.Title>
           </Modal.Header>
-          <Modal.Body          >
+          <Modal.Body>
 
-
-
-
-            <TablePage />
+            <TablePage FlightData={this.state.flightData} />
 
 
           </Modal.Body>
           <Modal.Footer>
             <ButtonToolbar>
-              <Button variant="primary" onClick={() => {
-                this.setState
-                  ({
-                    isModalVisible: false
-                  })
-              }}>Close</Button>
+              <Button variant="primary" onClick={() =>
+                this.setState({
+                  isModalVisible: false
+                })
+              }>Close</Button>
             </ButtonToolbar>
           </Modal.Footer>
         </Modal>
 
-        {/* <TablePage/> */}
 
       </div>
     );

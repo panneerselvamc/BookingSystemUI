@@ -1,18 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
+
 import * as serviceWorker from "./serviceWorker";
 import HomePage from "./Pages/HomePage";
 import RequirementPage from "./Pages/RequirementPage";
 import TablePage from './Pages/TablePage';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import { Route, BrowserRouter as Router } from 'react-router-dom'
 const routing = (
   <Router>
     <div>
       <Route path="/home" component={HomePage} />
-      <Route path="/bookaflight" component={RequirementPage} />
-      <Route path="/table" component={TablePage}/>
+      <Route path="/searchaflight" component={RequirementPage} />
+      
     </div>
   </Router>
 );

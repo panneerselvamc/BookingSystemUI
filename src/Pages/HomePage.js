@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import { Button, FormControl, Form, Nav, Navbar ,Carousel} from "react-bootstrap";
+import { Carousel} from "react-bootstrap";
 import flight1 from '../images/flight1.jpg';
 import flight2 from '../images/flight3.jpg';
 import Header from './Header';
 export default class HomePage extends Component {
     
   render() {
-      const footer={
- 
-      }
+     
     return (
       <Header>
     
@@ -23,9 +21,9 @@ export default class HomePage extends Component {
                 alt="First slide"
               />
               <Carousel.Caption>
-                <h3>First slide label</h3>
+                <h3>Toni Morrison, Song of Solomon</h3>
                 <p>
-                  Nulla vitae elit libero, a pharetra augue mollis interdum.
+                You wanna fly, you got to give up the shit that weighs you down.
                 </p>
               </Carousel.Caption>
             </Carousel.Item>
@@ -37,9 +35,9 @@ export default class HomePage extends Component {
                 alt="Third slide"
               />
 
-              <Carousel.Caption>
-                <h3>Second slide label</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              <Carousel.Caption style={{color:"black"}}>
+                <h3><b>Kerli</b></h3>
+                <p><b>Don't be scared to fly high, 'cause it will inspire others.</b></p>
               </Carousel.Caption>
             </Carousel.Item>
            

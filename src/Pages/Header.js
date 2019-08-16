@@ -1,41 +1,40 @@
 import React, { Component } from 'react'
 import {
-    Button,
-    FormControl,
-    Form,
-    Nav,
-    Navbar,
-    Carousel
-  } from "react-bootstrap";
+  Button,
+  FormControl,
+  Form,
+  Nav,
+  Navbar
+} from "react-bootstrap";
 export default class Header extends Component {
-    render() {
-        return (
-            <div>
+  render() {
+    return (
       <div>
-        <Navbar bg="dark" variant="dark">
-          <b style={{ color: "white" }}>Fight Booking System</b>
-          <Nav className="mr-auto">
-            <Nav.Link href="/home">Home</Nav.Link>
-            <Nav.Link href="/bookaflight">Book a Flight</Nav.Link>
-          </Nav>
-          <Form inline>
-            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-            <Button
-              variant="outline-info"
-              onClick={() => {
-                alert("Hai");
-              }}
-            >
-              Search
+        <div>
+          <Navbar bg="dark" variant="dark">
+            <b style={{ color: "white" }}>Fight Booking System</b>
+            <Nav className="mr-auto">
+              <Nav.Link href="/home">Home</Nav.Link>
+              <Nav.Link href="/searchaflight">Book a Flight</Nav.Link>
+            </Nav>
+            <Form inline>
+              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+              <Button
+                variant="outline-info"
+                onClick={() => {
+                  // alert("Hai");
+                }}
+              >
+                Search
             </Button>
-          </Form>
-        </Navbar>
-      </div>
-      
-   
+            </Form>
+          </Navbar>
+        </div>
 
-      {this.props.children}
-    </div>
-        )
-    }
+
+
+        {this.props.children}
+      </div>
+    )
+  }
 }

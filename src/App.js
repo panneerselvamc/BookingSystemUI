@@ -1,13 +1,10 @@
 import React from "react";
-import HomePage from "./Pages/HomePage";
-import RequirementPage from "./Pages/RequirementPage";
 import {
   Button,
   FormControl,
   Form,
   Nav,
-  Navbar,
-  Carousel
+  Navbar
 } from "react-bootstrap";
 
 function App() {
